@@ -1,4 +1,5 @@
-﻿open System
+﻿module day2
+
 open System.IO
 
 
@@ -23,4 +24,3 @@ file
 |> List.map hardBrute
 |> List.sumBy (fun x -> if x then 1 else 0)
 |> printfn "%i"
-
