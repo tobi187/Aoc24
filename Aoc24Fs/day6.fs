@@ -1,4 +1,7 @@
-﻿open System.IO
+module day6
+
+open System.IO
+open Microsoft.FSharp.Core
 
 type Tile = Empty | Out | Block | Used
 type Dir = Right | Left | Up | Down

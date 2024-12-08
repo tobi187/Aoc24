@@ -15,6 +15,7 @@
         <Content Include="in.txt">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
+        <Compile Include="day6.fs" />
     </ItemGroup>
 
 </Project>
