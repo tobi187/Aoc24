@@ -1,7 +1,6 @@
 module day6
 
 open System.IO
-open Microsoft.FSharp.Core
 
 type Tile = Empty | Out | Block | Used
 type Dir = Right | Left | Up | Down
@@ -12,7 +11,7 @@ type P = {
     dir: Dir
 }
 
-let pp = { x = 4; y = 6; dir = Dir.Up }
+let pp = { x = 89; y = 84; dir = Dir.Up }
 
 let getObst ind line =
     Seq.toList line
@@ -30,6 +29,8 @@ let arr =
     File.ReadAllLines "in.txt"
     |> array2D
    
+printfn "%A" arr[pp.y,pp.x]
+
 arr[pp.y,pp.x] <- 'u'
    
 let cDir = function
