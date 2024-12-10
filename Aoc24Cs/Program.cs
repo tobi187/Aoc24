@@ -1,4 +1,4 @@
 ﻿using Aoc24Cs;
 
-var d3 = new Day3();
+var d3 = new Day7();
 d3.Run();
