@@ -16,18 +16,30 @@ let points =
     |> List.map (fun (f,s) -> f, List.map (snd) s)
     |> Map
 
-let brute f s dx dy =
-    [
-        for (x,y) in [(0,1;1,0;)]
-    ]
+let drawPoint x y =
+    if x >= 0 && y >= 0 && x < lenX && y < lenY then file[y, x] <- '#'
 
 let drawPoints f s =
     let fx,fy = f
     let sx,sy = s
     if fx = sx || sy = fy then failwith "hmmm"
-    let diffx = abs (fx - sx)
-    let diffy = abs (fy - sy)
-    0
+    let diffx = (fx - sx)
+    let diffy = (fy - sy)
+    match sign diffx, sign diffy with
+    | 1,1   -> 
+        drawPoint (fx-diffx) (fy-diffy) 
+        drawPoint (sx+diffx) (sy+diffy) 
+    | 1,-1  -> 
+        drawPoint (fx-diffx) (fy+diffy) 
+        drawPoint (sx+diffx) (sy-diffy) 
+    | -1,1  -> 
+        drawPoint (fx+diffx) (fy-diffy) 
+        drawPoint (sx-diffx) (sy+diffy)
+    | -1,-1 -> 
+        drawPoint (fx+diffx) (fy+diffy) 
+        drawPoint (sx-diffx) (sy-diffy)
+    | a, b -> failwith (sprintf "Unexpected %i %i " a b)
+    |> ignore
 
 
 for KeyValue(k, v) in points do
@@ -35,3 +47,13 @@ for KeyValue(k, v) in points do
     for i in 0..(len-1) do
         for j in (i+1)..len do
             drawPoints v[i] v[j]
+
+
+file
+|> Seq.cast<char>
+|> Seq.filter((=)'#')
+|> Seq.length
+|> printfn "%i"
+
+for y in 0 .. file.GetLength(1) - 1 do
+    printfn "%A" file.[y,*]
