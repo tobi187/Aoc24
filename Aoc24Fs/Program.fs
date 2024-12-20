@@ -17,7 +17,12 @@ let points =
     |> Map
 
 let drawPoint x y =
-    if x >= 0 && y >= 0 && x < lenX && y < lenY then file[y, x] <- '#'
+    if x >= 0 && y >= 0 && x < lenX && y < lenY && file[y,x] = '.' then file[y, x] <- '#'
+
+let dp x y =
+    if x >= 0 && y >= 0 && x < lenX && y < lenY
+    then Some (x,y) else None
+
 
 let drawPoints f s =
     let fx,fy = f
@@ -25,35 +30,46 @@ let drawPoints f s =
     if fx = sx || sy = fy then failwith "hmmm"
     let diffx = (fx - sx)
     let diffy = (fy - sy)
-    match sign diffx, sign diffy with
-    | 1,1   -> 
-        drawPoint (fx-diffx) (fy-diffy) 
-        drawPoint (sx+diffx) (sy+diffy) 
-    | 1,-1  -> 
-        drawPoint (fx-diffx) (fy+diffy) 
-        drawPoint (sx+diffx) (sy-diffy) 
-    | -1,1  -> 
-        drawPoint (fx+diffx) (fy-diffy) 
-        drawPoint (sx-diffx) (sy+diffy)
-    | -1,-1 -> 
-        drawPoint (fx+diffx) (fy+diffy) 
-        drawPoint (sx-diffx) (sy-diffy)
-    | a, b -> failwith (sprintf "Unexpected %i %i " a b)
-    |> ignore
+    [
+        dp (sx + (diffx * -1)) (sy + (diffy * -1)) 
+        dp (fx+diffx) (fy+diffy)
+    ]
+    //match sign diffx, sign diffy with
+    //| 1,1   -> 
+    //    drawPoint (fx+(diffx*-1) (fy+(diffy*-1)) 
+    //    drawPoint (sx+diffx) (sy+diffy) 
+    //| 1,-1  -> 
+    //    drawPoint (fx-diffx) (fy+diffy) 
+    //    drawPoint (sx+diffx) (sy-diffy) 
+    //| -1,1  -> 
+    //    drawPoint (fx+diffx) (fy-diffy) 
+    //    drawPoint (sx-diffx) (sy+diffy)
+    //| -1,-1 -> 
+    //    drawPoint (fx+diffx) (fy+diffy) 
+    //    drawPoint (sx-diffx) (sy-diffy)
+    //| a, b -> failwith (sprintf "Unexpected %i %i " a b)
+    //|> ignore
 
 
-for KeyValue(k, v) in points do
-    let len = (List.length v) - 1
-    for i in 0..(len-1) do
-        for j in (i+1)..len do
-            drawPoints v[i] v[j]
-
-
-file
-|> Seq.cast<char>
-|> Seq.filter((=)'#')
-|> Seq.length
+[
+    for KeyValue(k, v) in points do
+        let len = (List.length v) - 1
+        for i in 0..(len-1) do
+            for j in (i+1)..len do
+                yield drawPoints v[i] v[j]
+]
+|> List.concat
+|> List.choose id
+|> List.distinct
+|> List.length
 |> printfn "%i"
 
-for y in 0 .. file.GetLength(1) - 1 do
-    printfn "%A" file.[y,*]
+
+//file
+//|> Seq.cast<char>
+//|> Seq.filter((=)'#')
+//|> Seq.length
+//|> printfn "%i"
+
+//for y in 0 .. file.GetLength(1) - 1 do
+//    printfn "%A" file.[y,*]
