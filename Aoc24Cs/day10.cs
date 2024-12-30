@@ -24,7 +24,7 @@ public class Day10
                 if (grid[y][x] == 0)
                     l.Add(new(x, y));
 
-        for (int i = 0; i < 7; i++)
+        for (int i = 0; i < 20; i++)
             foreach (var ll in l)
                 ll.Step(grid);
 
@@ -40,6 +40,8 @@ class Way(int xx, int yy)
 
     public void Step(int[][] g)
     {
+        if (nextNum > 9)
+            return;
         var np = new List<(int, int)>();
         foreach (var (x, y) in points)
         {
@@ -57,13 +59,13 @@ class Way(int xx, int yy)
     }
 }
 
-static class Extensions
+public static class Extensions
 {
-    public static int GetOrDef(this int[][] arr, int x, int y)
+    public static T? GetOrDef<T>(this T[][] arr, int x, int y)
     {
         if (x < 0 || y < 0 || y >= arr.Length || x >= arr[0].Length)
         {
-            return -1;
+            return default;
         }
         return arr[y][x];
     }

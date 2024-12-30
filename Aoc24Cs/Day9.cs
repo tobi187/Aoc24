@@ -99,20 +99,20 @@ namespace Aoc24Cs
                     }
                 }
             }
-            Console.WriteLine(int.MaxValue);
+            Console.WriteLine(long.MaxValue);
             // 5024982422077
             // between
             // 6390782022205
-            //long sum = 0;
-            //var ind = 0;
-            //foreach (var b in tl)
-            //{
-            //    sum += b.GetSum(ind);
-            //    ind += b.length;
-            //}
-            var a = string.Concat(tl.Select(x=>x.GS()));
-            Console.WriteLine(a.Length);
-            var sum = a.Select((x, i) => x == '.' ? 0 : (long.Parse(x.ToString()) * i)).Sum();
+            long sum = 0;
+            var ind = 0;
+            foreach (var b in tl)
+            {
+                sum += b.GetSum(ind);
+                ind += b.length;
+            }
+            //var a = string.Concat(tl.Select(x=>x.GS()));
+            //Console.WriteLine(a.Length);
+            //var sum = a.Select((x, i) => x == '.' ? 0 : (long.Parse(x.ToString()) * i)).Sum();
             System.Console.WriteLine(sum);
         }
     }
